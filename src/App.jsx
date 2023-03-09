@@ -10,7 +10,9 @@ function App() {
       return input
         .replaceAll(`,`, `;`)
         .replaceAll(`'`, ` `)
-        .replaceAll(`"`, ` `);
+        .replaceAll(`"`, ` `)
+        .replace("style={{", "")
+        .replace("}}", "");
     };
     setOutput(translateText(text));
   }, [text]);
