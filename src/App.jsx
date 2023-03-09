@@ -12,7 +12,9 @@ function App() {
         .replaceAll(`'`, ` `)
         .replaceAll(`"`, ` `)
         .replace("style={{", "")
-        .replace("}}", "");
+        .replace("}}", "")
+        .replace(/([a-z])([A-Z])/g, "$1-$2")
+        .toLowerCase();
     };
     setOutput(translateText(text));
   }, [text]);
