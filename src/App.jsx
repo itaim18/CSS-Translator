@@ -1,30 +1,49 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import Select from "react-select";
 
 function App() {
   const [text, setText] = useState("");
   const [output, setOutput] = useState("");
+  const [optionFrom, setOptionFrom] = useState("");
+  const [optionTo, setOptionTo] = useState("");
 
+  const options = [
+    { value: "inline", label: "Inline Style" },
+    { value: "module", label: "Module Style" },
+    { value: "tailwind", label: "Tailwind" },
+  ];
   useEffect(() => {
     const translateText = (input) => {
       return input
         .replaceAll(`,`, `;`)
         .replaceAll(`'`, ` `)
         .replaceAll(`"`, ` `)
-        .replace("style={{", "")
+        .replaceAll(" ", "")
+        .replace(/^(.*?){{/, "")
         .replace("}}", "")
         .replace(/([a-z])([A-Z])/g, "$1-$2")
         .toLowerCase();
     };
     setOutput(translateText(text));
   }, [text]);
-
+  console.log(optionFrom, optionTo);
   return (
     <div className="App">
-      <h1 style={{ color: "purple" }}>CSS translator</h1>
+      <h1 style={{ color: "purple" }}>I "Know" CSS</h1>
       <div style={{ display: "flex" }}>
         <div>
-          <h3 style={{ color: "purple", opacity: "0.8" }}>Inline style</h3>
+          <Select
+            options={options}
+            onChange={setOptionFrom}
+            styles={{
+              option: (base) => ({
+                ...base,
+                color: "#333",
+                height: "100%",
+              }),
+            }}
+          />
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -34,8 +53,17 @@ function App() {
           ></textarea>
         </div>
         <div>
-          {" "}
-          <h3 style={{ color: "purple", opacity: "0.8" }}>Style rules</h3>
+          <Select
+            options={options}
+            onChange={setOptionTo}
+            styles={{
+              option: (base) => ({
+                ...base,
+                color: "#333",
+                height: "100%",
+              }),
+            }}
+          />
           <textarea
             style={{
               color: "rgb(200,200,200)",
