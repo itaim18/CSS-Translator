@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Select from "react-select";
-
+import {
+  trFromInlineToModule,
+  trFromModuleToInline,
+} from "./utils/translations";
 function App() {
   const [text, setText] = useState("");
   const [output, setOutput] = useState("");
@@ -9,24 +12,24 @@ function App() {
   const [optionTo, setOptionTo] = useState("");
 
   const options = [
-    { value: "inline", label: "Inline Style" },
-    { value: "module", label: "Module Style" },
-    { value: "tailwind", label: "Tailwind" },
+    { value: "in", label: "Inline Style" },
+    { value: "mo", label: "Module Style" },
+    { value: "ta", label: "Tailwind" },
   ];
   useEffect(() => {
     const translateText = (input) => {
-      return input
-        .replaceAll(`,`, `;`)
-        .replaceAll(`'`, ` `)
-        .replaceAll(`"`, ` `)
-        .replaceAll(" ", "")
-        .replace(/^(.*?){{/, "")
-        .replace("}}", "")
-        .replace(/([a-z])([A-Z])/g, "$1-$2")
-        .toLowerCase();
+      let translatedText = "";
+      if (optionFrom.value === optionTo.value) {
+        translatedText = text;
+      } else if (optionFrom.value === "in" && optionTo.value === "mo") {
+        translatedText = trFromInlineToModule(input);
+      } else if (optionFrom.value === "mo" && optionTo.value === "in") {
+        translatedText = trFromModuleToInline(input);
+      }
+      return translatedText;
     };
     setOutput(translateText(text));
-  }, [text]);
+  }, [text, optionFrom, optionTo]);
   console.log(optionFrom, optionTo);
   return (
     <div className="App">
